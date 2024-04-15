@@ -27,6 +27,10 @@ app.use('/api/pharmacists', pharmacistRoutes);
 app.use('/api/frontdesks', frontdeskRoutes);
 app.use('/api/patients', patientRoutes);
 
+app.get('/', (req, res) => {
+  res.send(`Health ERP Server Running PORT::${PORT}`);
+})
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
