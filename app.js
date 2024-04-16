@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require('cors');
+const path = require("path");
 const bodyParser = require('body-parser');
 const patientRoutes = require('./routes/patientRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
@@ -14,6 +15,8 @@ const authRoutes = require('./auth/authRoutes');
 const PORT = process.env.PORT || 8000;
 
 const app = express();
+
+app.use('/static', express.static(path.join(__dirname, 'uploads')))
 app.use(bodyParser.json());
 app.use(cors());
 
