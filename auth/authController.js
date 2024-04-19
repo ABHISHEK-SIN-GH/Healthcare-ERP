@@ -4,7 +4,7 @@ const user = {
   id: 1,
   username: "admin",
   password: "admin",
-  role: "doctor",
+  role: "admin",
   email: "admin@mail.com",
   firstName: "super",
   lastName: "admin",

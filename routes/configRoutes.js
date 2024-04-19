@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const configController = require("../controllers/configController");
 const multer = require("multer");
+const authenticateToken = require('../auth/authMiddleware');
+const roleAuthorization = require('../auth/authRole');
+const ROLES = require('../constant');
 
 const fs = require("fs");
 const path = require("path");
@@ -23,14 +26,35 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+router.get(
+  "/",
+  authenticateToken, 
+  roleAuthorization([ROLES.ADMIN]),
+  configController.getHospitalInfo
+);
+
 router.post(
   "/",
+  authenticateToken, 
+  roleAuthorization([ROLES.ADMIN]),
   upload.fields([
     { name: "HospitalIcon", maxCount: 1 },
     { name: "HospitalLogo", maxCount: 1 },
     { name: "HospitalStamp", maxCount: 1 },
   ]),
   configController.configHospitalInfo
+);
+
+router.put(
+  "/:id",
+  authenticateToken, 
+  roleAuthorization([ROLES.ADMIN]),
+  upload.fields([
+    { name: "HospitalIcon", maxCount: 1 },
+    { name: "HospitalLogo", maxCount: 1 },
+    { name: "HospitalStamp", maxCount: 1 },
+  ]),
+  configController.updateHospitalInfo
 );
 
 module.exports = router;

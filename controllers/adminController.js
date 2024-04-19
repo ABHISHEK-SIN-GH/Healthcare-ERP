@@ -1,41 +1,116 @@
-const admins = ["admin1","admin2"];
+const { adminModel } = require("../models/adminModel");
 
-const registerAdmin = (req, res) => {  
-    res.json({
-        "message":`Admin registered successfully!`,
-        "admin":req.body
+const registerAdmin = async (req, res) => {
+  try {
+    const {
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+    } = req.body;
+
+    const admin = new adminModel({
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      role: "admin",
+      status: "active",
     });
+
+    await admin.save();
+    res.status(201).json(admin);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-const getAdminById = (req, res) => {
-    const {id} = req.params;
-    res.json({
-        "message":`Admin ID:${id} details fetched!`,
-        "admin":admins[0]
-    });
-};
-
-const getAllAdmins = (req, res) => {
-    res.json({
-        "message":`all admins fetched!`,
-        "admins":admins
-    });
-};
-
-const updateAdminById = (req, res) => {
-    const {id} = req.params;
-    res.json({
-        "message":`${id} admin updated!`,
-        "admin":admins[0]
-    });
-}
-
-const deleteAdminById = (req, res) => {
+const getAdminById = async (req, res) => {
+  try {
     const { id } = req.params;
-    res.json({
-        "message":`${id} admin deleted!`,
-        "admin":admins[0]
-    });
-}    
+    const admins = await adminModel.findById(id);
+    res.status(200).json(admins);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-module.exports = { registerAdmin, getAdminById, getAllAdmins, updateAdminById, deleteAdminById };
+const getAllAdmins = async (req, res) => {
+  try {
+    const admins = await adminModel.find();
+    res.status(200).json(admins);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateAdminById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+    } = req.body;
+    const admin = await adminModel.findByIdAndUpdate(id, {
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification
+    });
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+    res.status(200).json(admin);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const deleteAdminById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const admin = await adminModel.findByIdAndDelete(id);
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+    res
+      .status(200)
+      .json({ status: "success", message: "Admin deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  registerAdmin,
+  getAdminById,
+  getAllAdmins,
+  updateAdminById,
+  deleteAdminById,
+};

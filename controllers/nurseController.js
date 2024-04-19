@@ -1,41 +1,131 @@
-const nurses = ["nurse1","nurse2"];
+const { nurseModel } = require("../models/nurseModel");
 
-const registerNurse = (req, res) => {  
-    res.json({
-        "message":`Nurse registered successfully!`,
-        "nurse":req.body
+const nurses = ["nurse1", "nurse2"];
+
+const registerNurse = async (req, res) => {
+  try {
+    const {
+      regNo,
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      depart,
+      address,
+    } = req.body;
+
+    const nurse = new nurseModel({
+      regNo,
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      depart,
+      address,
+      role: "nurse",
+      status: "active",
     });
+
+    await nurse.save();
+    res.status(201).json(nurse);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
 };
 
-const getNurseById = (req, res) => {
-    const {id} = req.params;
-    res.json({
-        "message":`Nurse ID:${id} details fetched!`,
-        "nurse":nurses[0]
-    });
-};
-
-const getAllNurses = (req, res) => {
-    res.json({
-        "message":`all nurses fetched!`,
-        "nurses":nurses
-    });
-};
-
-const updateNurseById = (req, res) => {
-    const {id} = req.params;
-    res.json({
-        "message":`${id} nurse updated!`,
-        "nurse":nurses[0]
-    });
-}
-
-const deleteNurseById = (req, res) => {
+const getNurseById = async (req, res) => {
+  try {
     const { id } = req.params;
-    res.json({
-        "message":`${id} nurse deleted!`,
-        "nurse":nurses[0]
-    });
-}    
+    const nurses = await nurseModel.findById(id);
+    res.status(200).json(nurses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-module.exports = { registerNurse, getNurseById, getAllNurses, updateNurseById, deleteNurseById };
+const getAllNurses = async (req, res) => {
+  try {
+    const nurses = await nurseModel.find();
+    res.status(200).json(nurses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateNurseById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      regNo,
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      depart,
+      address,
+    } = req.body;
+    const nurse = await nurseModel.findByIdAndUpdate(id, {
+      regNo,
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      depart,
+      address,
+    });
+    if (!nurse) {
+      return res.status(404).json({ message: "Nurse not found" });
+    }
+    res.status(200).json(nurse);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const deleteNurseById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const nurse = await nurseModel.findByIdAndDelete(id);
+    if (!nurse) {
+      return res.status(404).json({ message: "Nurse not found" });
+    }
+    res
+      .status(200)
+      .json({ status: "success", message: "Nurse deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  registerNurse,
+  getNurseById,
+  getAllNurses,
+  updateNurseById,
+  deleteNurseById,
+};

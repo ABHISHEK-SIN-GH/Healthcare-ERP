@@ -1,41 +1,83 @@
-const users = ["user1","user2"];
+const { userModel } = require("../models/userModel");
 
-const registerUser = (req, res) => {  
-    res.json({
-        "message":`User registered successfully!`,
-        "user":req.body
+const registerUser = async (req, res) => {
+  try {
+    const { fname, lname, phone, email, dob, role } = req.body;
+    const user = new userModel({
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      role,
+      status: "active",
     });
+    await user.save();
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-const getUserById = (req, res) => {
-    const {id} = req.params;
-    res.json({
-        "message":`User ID:${id} details fetched!`,
-        "user":users[0]
-    });
-};
-
-const getAllUsers = (req, res) => {
-    res.json({
-        "message":`all users fetched!`,
-        "users":users
-    });
-};
-
-const updateUserById = (req, res) => {
-    const {id} = req.params;
-    res.json({
-        "message":`${id} user updated!`,
-        "user":users[0]
-    });
-}
-
-const deleteUserById = (req, res) => {
+const getUserById = async (req, res) => {
+  try {
     const { id } = req.params;
-    res.json({
-        "message":`${id} user deleted!`,
-        "user":users[0]
-    });
-}    
+    const users = await userModel.findById(id);
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-module.exports = { registerUser, getUserById, getAllUsers, updateUserById, deleteUserById };
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userModel.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fname, lname, phone, email, dob, role } = req.body;
+    const user = await userModel.findByIdAndUpdate(id, {
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      role,
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const deleteUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userModel.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res
+      .status(200)
+      .json({ status: "success", message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  registerUser,
+  getUserById,
+  getAllUsers,
+  updateUserById,
+  deleteUserById,
+};

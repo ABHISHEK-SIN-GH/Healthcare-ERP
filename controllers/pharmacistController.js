@@ -1,41 +1,125 @@
-const pharmacists = ["pharmacist1","pharmacist2"];
+const { pharmacistModel } = require("../models/pharmacistModel");
 
-const registerPharmacist = (req, res) => {  
-    res.json({
-        "message":`Pharmacist registered successfully!`,
-        "pharmacist":req.body
+const registerPharmacist = async (req, res) => {
+  try {
+    const {
+      regNo,
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      address,
+    } = req.body;
+
+    const pharmacist = new pharmacistModel({
+      regNo,
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      address,
+      role: "pharmacist",
+      status: "active",
     });
+
+    await pharmacist.save();
+    res.status(201).json(pharmacist);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
 };
 
-const getPharmacistById = (req, res) => {
-    const {id} = req.params;
-    res.json({
-        "message":`Pharmacist ID:${id} details fetched!`,
-        "pharmacist":pharmacists[0]
-    });
-};
-
-const getAllPharmacists = (req, res) => {
-    res.json({
-        "message":`all pharmacists fetched!`,
-        "pharmacists":pharmacists
-    });
-};
-
-const updatePharmacistById = (req, res) => {
-    const {id} = req.params;
-    res.json({
-        "message":`${id} pharmacist updated!`,
-        "pharmacist":pharmacists[0]
-    });
-}
-
-const deletePharmacistById = (req, res) => {
+const getPharmacistById = async (req, res) => {
+  try {
     const { id } = req.params;
-    res.json({
-        "message":`${id} pharmacist deleted!`,
-        "pharmacist":pharmacists[0]
-    });
-}    
+    const pharmacist = await pharmacistModel.findById(id);
+    res.status(200).json(pharmacist);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-module.exports = { registerPharmacist, getPharmacistById, getAllPharmacists, updatePharmacistById, deletePharmacistById };
+const getAllPharmacists = async (req, res) => {
+  try {
+    const pharmacists = await pharmacistModel.find();
+    res.status(200).json(pharmacists);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updatePharmacistById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      regNo,
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      address,
+    } = req.body;
+    const pharmacist = await pharmacistModel.findByIdAndUpdate(id, {
+      regNo,
+      fname,
+      lname,
+      phone,
+      email,
+      dob,
+      gender,
+      bloodGrp,
+      password,
+      design,
+      qualification,
+      address,
+    });
+    if (!pharmacist) {
+      return res.status(404).json({ message: "Pharmacist not found" });
+    }
+    res.status(200).json(pharmacist);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const deletePharmacistById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pharmacist = await pharmacistModel.findByIdAndDelete(id);
+    if (!pharmacist) {
+      return res.status(404).json({ message: "Pharmacist not found" });
+    }
+    res
+      .status(200)
+      .json({ status: "success", message: "Pharmacist deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  registerPharmacist,
+  getPharmacistById,
+  getAllPharmacists,
+  updatePharmacistById,
+  deletePharmacistById,
+};
