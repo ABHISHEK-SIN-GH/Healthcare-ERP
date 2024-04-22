@@ -47,6 +47,17 @@ const updateVitals = async (req, res) => {
   }
 };
 
+
+const getBloodGlucoses = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const patient = await patientBloodGlucosesModel.find({patientId:uid});
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const addBloodGlucoses = async (req, res) => {
   try {
     const { patientId, patientBloodGlucoses } = req.body;
@@ -63,7 +74,8 @@ const addBloodGlucoses = async (req, res) => {
 
 const updateBloodGlucoses = async (req, res) => {
   try {
-    const { id, patientId, patientBloodGlucoses } = req.body;
+    const { id } = req.params;
+    const { patientId, patientBloodGlucoses } = req.body;
     const patient = await patientBloodGlucosesModel.findByIdAndUpdate(id, {
       patientId,
       patientBloodGlucoses,
@@ -71,6 +83,17 @@ const updateBloodGlucoses = async (req, res) => {
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getBloodTransfusions = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const patient = await patientBloodTransfusionsModel.find({patientId:uid});
     res.status(200).json(patient);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -93,7 +116,8 @@ const addBloodTransfusions = async (req, res) => {
 
 const updateBloodTransfusions = async (req, res) => {
   try {
-    const { id, patientId, patientBloodTransfusions } = req.body;
+    const { id } = req.params;
+    const { patientId, patientBloodTransfusions } = req.body;
     const patient = await patientBloodTransfusionsModel.findByIdAndUpdate(id, {
       patientId,
       patientBloodTransfusions,
@@ -101,6 +125,17 @@ const updateBloodTransfusions = async (req, res) => {
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getIOCharts = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const patient = await patientIOChartsModel.find({patientId:uid});
     res.status(200).json(patient);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -120,7 +155,8 @@ const addIOCharts = async (req, res) => {
 
 const updateIOCharts = async (req, res) => {
   try {
-    const { id, patientId, patientIOCharts } = req.body;
+    const { id } = req.params;
+    const { patientId, patientIOCharts } = req.body;
     const patient = await patientIOChartsModel.findByIdAndUpdate(id, {
       patientId,
       patientIOCharts,
@@ -128,6 +164,17 @@ const updateIOCharts = async (req, res) => {
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getTreatments = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const patient = await patientTreatmentsModel.find({patientId:uid});
     res.status(200).json(patient);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -150,7 +197,8 @@ const addTreatments = async (req, res) => {
 
 const updateTreatments = async (req, res) => {
   try {
-    const { id, patientId, patientTreatments } = req.body;
+    const { id } = req.params;
+    const { patientId, patientTreatments } = req.body;
     const patient = await patientTreatmentsModel.findByIdAndUpdate(id, {
       patientId,
       patientTreatments,
@@ -158,6 +206,17 @@ const updateTreatments = async (req, res) => {
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getMedications = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const patient = await patientMedicationsModel.find({patientId:uid});
     res.status(200).json(patient);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -180,7 +239,8 @@ const addMedications = async (req, res) => {
 
 const updateMedications = async (req, res) => {
   try {
-    const { id, patientId, patientMedications } = req.body;
+    const { id } = req.params;
+    const { patientId, patientMedications } = req.body;
     const patient = await patientMedicationsModel.findByIdAndUpdate(id, {
       patientId,
       patientMedications,
@@ -188,6 +248,17 @@ const updateMedications = async (req, res) => {
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getVisits = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const patient = await patientVisitsModel.find({patientId:uid});
     res.status(200).json(patient);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -207,7 +278,8 @@ const addVisits = async (req, res) => {
 
 const updateVisits = async (req, res) => {
   try {
-    const { id, patientId, patientVisits } = req.body;
+    const { id } = req.params;
+    const { patientId, patientVisits } = req.body;
     const patient = await patientVisitsModel.findByIdAndUpdate(id, {
       patientId,
       patientVisits,
@@ -215,6 +287,17 @@ const updateVisits = async (req, res) => {
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getNotes = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const patient = await patientNotesModel.find({patientId:uid});
     res.status(200).json(patient);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -234,7 +317,8 @@ const addNotes = async (req, res) => {
 
 const updateNotes = async (req, res) => {
   try {
-    const { id, patientId, patientNotes } = req.body;
+    const { id } = req.params;
+    const { patientId, patientNotes } = req.body;
     const patient = await patientNotesModel.findByIdAndUpdate(id, {
       patientId,
       patientNotes,
@@ -252,18 +336,32 @@ module.exports = {
   getVitals,
   addVitals,
   updateVitals,
+
+  getBloodGlucoses,
   addBloodGlucoses,
   updateBloodGlucoses,
+
+  getBloodTransfusions,
   addBloodTransfusions,
   updateBloodTransfusions,
+
+  getIOCharts,
   addIOCharts,
   updateIOCharts,
+
+  getTreatments,
   addTreatments,
   updateTreatments,
+
+  getMedications,
   addMedications,
   updateMedications,
+
+  getVisits,
   addVisits,
   updateVisits,
+
+  getNotes,
   addNotes,
   updateNotes,
 };
