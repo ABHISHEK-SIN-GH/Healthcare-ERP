@@ -5,6 +5,7 @@ const frontdesks = ["frontdesk1", "frontdesk2"];
 const registerFrontdesk = async (req, res) => {
   try {
     const {
+      username,
       fname,
       lname,
       phone,
@@ -19,6 +20,7 @@ const registerFrontdesk = async (req, res) => {
     } = req.body;
 
     const frontdesk = new frontdeskModel({
+      username,
       fname,
       lname,
       phone,
@@ -38,7 +40,12 @@ const registerFrontdesk = async (req, res) => {
     res.status(201).json(frontdesk);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    if (error.code === 11000 ) {
+      res.status(400).json({ error: 'user is already registered.' });
+    }
+    else {
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
   }
 };
 

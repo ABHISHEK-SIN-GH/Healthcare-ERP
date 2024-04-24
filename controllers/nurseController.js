@@ -5,6 +5,7 @@ const nurses = ["nurse1", "nurse2"];
 const registerNurse = async (req, res) => {
   try {
     const {
+      username,
       regNo,
       fname,
       lname,
@@ -21,6 +22,7 @@ const registerNurse = async (req, res) => {
     } = req.body;
 
     const nurse = new nurseModel({
+      username,
       regNo,
       fname,
       lname,
@@ -41,8 +43,12 @@ const registerNurse = async (req, res) => {
     await nurse.save();
     res.status(201).json(nurse);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    if (error.code === 11000 ) {
+      res.status(400).json({ error: 'user is already registered.' });
+    }
+    else {
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
   }
 };
 

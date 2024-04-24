@@ -14,6 +14,8 @@ const getAllPatients = async (req, res) => {
 const registerOPDPatient = async (req, res) => {
   try {
     const {
+      username,
+      password,
       fname,
       lname,
       phone,
@@ -36,6 +38,7 @@ const registerOPDPatient = async (req, res) => {
     } = req.body;
 
     const patient = new opdModel({
+      username,
       fname,
       lname,
       phone,
@@ -63,8 +66,12 @@ const registerOPDPatient = async (req, res) => {
     await patient.save();
     res.status(201).json(patient);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    if (error.code === 11000 ) {
+      res.status(400).json({ error: 'user is already registered.' });
+    }
+    else {
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
   }
 };
 
@@ -158,6 +165,8 @@ const deleteOPDPatientById = async (req, res) => {
 const registerIPDPatient = async (req, res) => {
   try {
     const {
+      username,
+      password,
       fname,
       lname,
       phone,
@@ -182,6 +191,7 @@ const registerIPDPatient = async (req, res) => {
     } = req.body;
 
     const patient = new ipdModel({
+      username,
       fname,
       lname,
       phone,
@@ -211,8 +221,12 @@ const registerIPDPatient = async (req, res) => {
     await patient.save();
     res.status(201).json(patient);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    if (error.code === 11000 ) {
+      res.status(400).json({ error: 'user is already registered.' });
+    }
+    else {
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
   }
 };
 

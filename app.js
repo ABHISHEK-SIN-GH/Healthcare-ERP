@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require('cors');
 const path = require("path");
+const fs = require('fs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const medicineRoutes = require('./routes/medicineRoutes');
@@ -48,6 +49,24 @@ app.use('/api/uploads', uploadRoutes);
 
 app.get('/', (req, res) => {
   res.send(`Health ERP Server Running PORT::${PORT}`);
+})
+
+app.get('/read-all-patients-files', (req, res) => {
+  const directoryPath = path.join(__dirname, 'uploads/patients');
+  let jsonData = [];
+  try {
+    fs.readdir(directoryPath, function (err, files) {
+      if (err) {
+        return console.log('Unable to scan directory: ' + err);
+      } 
+      files.forEach(function (file,index) {
+          jsonData[index] = file.toString();
+      });
+      res.send(jsonData);
+    });
+  } catch (error) {
+    res.send(error);
+  }
 })
 
 app.listen(PORT, () => {

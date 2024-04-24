@@ -58,10 +58,6 @@ const opdPatientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
 });
 
 const opdModel = userModel.discriminator("opdPatients", opdPatientSchema);

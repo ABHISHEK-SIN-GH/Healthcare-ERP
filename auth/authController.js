@@ -1,20 +1,18 @@
+const { userModel } = require("../models/userModel");
 const authService = require("./authService");
 
-const user = {
-  id: 1,
+const superAdmin = {
   username: "admin",
   password: "admin",
-  role: "admin",
-  email: "admin@mail.com",
-  firstName: "super",
-  lastName: "admin",
-  age: 24
+  role: "admin"
 };
 
-const authController = (req, res) => {
+const authController = async (req, res) => {
   const { username, password } = req.body;
+  // const user = await userModel.find({username})
+  // console.log(user);
   if (username == "admin" && password == "admin") {
-    const data = user;
+    const data = superAdmin;
     const token = authService.generateToken(data);
     res.json({ token });
   } else {

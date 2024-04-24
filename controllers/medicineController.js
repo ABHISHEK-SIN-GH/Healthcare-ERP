@@ -27,7 +27,12 @@ const registerMedicine = async (req, res) => {
     await medicine.save();
     res.status(201).json(medicine);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.code === 11000 ) {
+      res.status(400).json({ error: 'medicine is already registered.' });
+    }
+    else {
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
   }
 };
 

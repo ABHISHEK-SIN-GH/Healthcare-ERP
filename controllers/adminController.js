@@ -3,6 +3,7 @@ const { adminModel } = require("../models/adminModel");
 const registerAdmin = async (req, res) => {
   try {
     const {
+      username,
       fname,
       lname,
       phone,
@@ -16,6 +17,7 @@ const registerAdmin = async (req, res) => {
     } = req.body;
 
     const admin = new adminModel({
+      username,
       fname,
       lname,
       phone,
@@ -33,7 +35,12 @@ const registerAdmin = async (req, res) => {
     await admin.save();
     res.status(201).json(admin);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.code === 11000 ) {
+      res.status(400).json({ error: 'user is already registered.' });
+    }
+    else {
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
   }
 };
 
