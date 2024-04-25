@@ -29,7 +29,7 @@ const upload = multer({ storage });
 router.post(
   "/",
   authenticateToken,
-  roleAuthorization([ROLES.ADMIN]),
+  roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]),
   upload.fields([{ name: "patientImage", maxCount: 1 }]),
   uploadImage
 );

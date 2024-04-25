@@ -29,14 +29,14 @@ const upload = multer({ storage });
 router.get(
   "/",
   authenticateToken, 
-  roleAuthorization([ROLES.ADMIN]),
+  roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]),
   configController.getHospitalInfo
 );
 
 router.post(
   "/",
   authenticateToken, 
-  roleAuthorization([ROLES.ADMIN]),
+  roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]),
   upload.fields([
     { name: "HospitalIcon", maxCount: 1 },
     { name: "HospitalLogo", maxCount: 1 },
@@ -48,7 +48,7 @@ router.post(
 router.put(
   "/:id",
   authenticateToken, 
-  roleAuthorization([ROLES.ADMIN]),
+  roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]),
   upload.fields([
     { name: "HospitalIcon", maxCount: 1 },
     { name: "HospitalLogo", maxCount: 1 },

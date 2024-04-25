@@ -5,10 +5,10 @@ const authenticateToken = require('../auth/authMiddleware');
 const roleAuthorization = require('../auth/authRole');
 const ROLES = require('../constant');
 
-router.post('/', authenticateToken, roleAuthorization([ROLES.ADMIN]), doctorController.registerDoctor);
-router.get('/', authenticateToken, roleAuthorization([ROLES.ADMIN]), doctorController.getAllDoctors);
-router.get('/:id', authenticateToken, roleAuthorization([ROLES.ADMIN]), doctorController.getDoctorById);
-router.put('/:id', authenticateToken, roleAuthorization([ROLES.ADMIN]), doctorController.updateDoctorById);
-router.delete('/:id', authenticateToken, roleAuthorization([ROLES.ADMIN]), doctorController.deleteDoctorById);
+router.post('/', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), doctorController.registerDoctor);
+router.get('/', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), doctorController.getAllDoctors);
+router.get('/:id', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), doctorController.getDoctorById);
+router.put('/:id', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), doctorController.updateDoctorById);
+router.delete('/:id', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), doctorController.deleteDoctorById);
 
 module.exports = router;
