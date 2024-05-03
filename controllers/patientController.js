@@ -1,10 +1,10 @@
 const { ipdModel } = require("../models/ipdModel");
 const { opdModel } = require("../models/opdModel");
-const { userModel } = require("../models/userModel");
+const { patientModel } = require("../models/patientModel");
 
 const getAllPatients = async (req, res) => {
   try {
-    const patients = await userModel.find({role:'patient'});
+    const patients = await patientModel.find();
     res.status(200).json(patients);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -183,6 +183,7 @@ const registerIPDPatient = async (req, res) => {
       symptoms,
       depart,
       consultant,
+      attendingConsultant,
       ward,
       bed,
       notes,
@@ -208,6 +209,7 @@ const registerIPDPatient = async (req, res) => {
       symptoms,
       depart,
       consultant,
+      attendingConsultant,
       ward,
       bed,
       notes,
@@ -269,6 +271,7 @@ const updateIPDPatientById = async (req, res) => {
       symptoms,
       depart,
       consultant,
+      attendingConsultant,
       ward,
       bed,
       notes,
@@ -291,6 +294,7 @@ const updateIPDPatientById = async (req, res) => {
       symptoms,
       depart,
       consultant,
+      attendingConsultant,
       ward,
       bed,
       notes,

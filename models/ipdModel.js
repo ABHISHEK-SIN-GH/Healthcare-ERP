@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { userModel } = require("./userModel");
+const { patientModel } = require("./patientModel");
 
 const ipdPatientSchema = new mongoose.Schema({
   gender: {
@@ -43,7 +43,11 @@ const ipdPatientSchema = new mongoose.Schema({
     required: true,
   },
   consultant: {
-    type: String,
+    type: Object,
+    required: true,
+  },
+  attendingConsultant: {
+    type: Object,
     required: true,
   },
   ward: {
@@ -68,6 +72,6 @@ const ipdPatientSchema = new mongoose.Schema({
   },
 });
 
-const ipdModel = userModel.discriminator("ipdPatients", ipdPatientSchema);
+const ipdModel = patientModel.discriminator("ipdPatients", ipdPatientSchema);
 
 module.exports = { ipdModel };

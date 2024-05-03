@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { userModel } = require("./userModel");
+const { patientModel } = require("./patientModel");
 
 const opdPatientSchema = new mongoose.Schema({
   gender: {
@@ -43,7 +43,7 @@ const opdPatientSchema = new mongoose.Schema({
     required: true,
   },
   consultant: {
-    type: String,
+    type: Object,
     required: true,
   },
   notes: {
@@ -60,6 +60,6 @@ const opdPatientSchema = new mongoose.Schema({
   },
 });
 
-const opdModel = userModel.discriminator("opdPatients", opdPatientSchema);
+const opdModel = patientModel.discriminator("opdPatients", opdPatientSchema);
 
 module.exports = { opdModel };

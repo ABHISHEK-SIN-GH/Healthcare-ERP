@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const patientProceduresSchema = new mongoose.Schema({
+  patientId: {
+    type: String,
+    required: true,
+  },
+  patientProcedures: {
+    type: String,
+    required: true,
+  },
+});
+
 const patientVitalsSchema = new mongoose.Schema({
   patientId: {
     type: String,
@@ -88,6 +99,10 @@ const patientNotesSchema = new mongoose.Schema({
   },
 });
 
+const patientProceduresModel = mongoose.model(
+  "patientProcedures",
+  patientProceduresSchema
+);
 const patientVitalsModel = mongoose.model(
   "patientVitals",
   patientVitalsSchema
@@ -122,6 +137,7 @@ const patientNotesModel = mongoose.model(
 );
 
 module.exports = {
+  patientProceduresModel,
   patientVitalsModel,
   patientBloodGlucosesModel,
   patientBloodTransfusionsModel,

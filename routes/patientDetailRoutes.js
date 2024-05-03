@@ -5,6 +5,11 @@ const authenticateToken = require('../auth/authMiddleware');
 const roleAuthorization = require('../auth/authRole');
 const ROLES = require('../constant');
 
+router.get('/procedures/:uid', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), patientDetailController.getProcedures);
+router.post('/procedures/', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), patientDetailController.addProcedures);
+router.put('/procedures/:id', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), patientDetailController.updateProcedures);
+
+
 router.get('/vitals/:uid', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), patientDetailController.getVitals);
 router.post('/vitals/', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), patientDetailController.addVitals);
 router.put('/vitals/:id', authenticateToken, roleAuthorization([ROLES.ADMIN,ROLES.DOCTOR,ROLES.NURSE,ROLES.FRONTDESK,ROLES.PHARMACIST]), patientDetailController.updateVitals);

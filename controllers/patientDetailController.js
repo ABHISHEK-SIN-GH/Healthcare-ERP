@@ -7,7 +7,46 @@ const {
   patientMedicationsModel,
   patientVisitsModel,
   patientNotesModel,
+  patientProceduresModel,
 } = require("../models/patientDetailModel");
+
+const getProcedures = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const patient = await patientProceduresModel.find({patientId:uid});
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const addProcedures = async (req, res) => {
+  try {
+    const { patientId, patientProcedures } = req.body;
+    const patient = new patientProceduresModel({ patientId, patientProcedures });
+    await patient.save();
+    res.status(201).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const updateProcedures = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { patientId, patientProcedures } = req.body;
+    const patient = await patientProceduresModel.findByIdAndUpdate(id, {
+      patientId,
+      patientProcedures,
+    });
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 const getVitals = async (req, res) => {
   try {
@@ -333,6 +372,10 @@ const updateNotes = async (req, res) => {
 };
 
 module.exports = {
+  getProcedures,
+  addProcedures,
+  updateProcedures,
+
   getVitals,
   addVitals,
   updateVitals,
