@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 8000;
 
 const app = express();
 
-mongoose.connect('mongodb+srv://abhishek:singh1510abhishek@healthcareerp.rza19p2.mongodb.net')
+mongoose.connect(process.env.MONGO_DB_URL)
 .then(() => {
   console.log('Connected to MongoDB');
 })
@@ -30,7 +30,9 @@ mongoose.connect('mongodb+srv://abhishek:singh1510abhishek@healthcareerp.rza19p2
   process.exit(1);
 });
 
+app.use(express.static(path.join(__dirname, 'dist')))
 app.use('/static', express.static(path.join(__dirname, 'uploads')))
+
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -47,7 +49,11 @@ app.use('/api/patientDetails', patientDetailRoutes);
 app.use('/api/medicines', medicineRoutes);
 app.use('/api/uploads', uploadRoutes);
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/dist/index.html'));
+})
+
+app.get('/health', (req, res) => {
   res.send(`Health ERP Server Running PORT::${PORT}`);
 })
 
