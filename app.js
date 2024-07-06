@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGO_DB_URL)
   process.exit(1);
 });
 
-app.use(express.static(path.join(__dirname, 'dist')))
+app.use(express.static(path.join(__dirname, 'frontend/dist')))
 app.use('/static', express.static(path.join(__dirname, 'uploads')))
 
 app.use(bodyParser.json());
@@ -50,7 +50,7 @@ app.use('/api/medicines', medicineRoutes);
 app.use('/api/uploads', uploadRoutes);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/dist/index.html'));
+  res.sendFile(path.join(__dirname+'/frontend/dist/index.html'));
 })
 
 app.get('/health', (req, res) => {
