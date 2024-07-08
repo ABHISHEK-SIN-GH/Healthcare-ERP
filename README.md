@@ -2,7 +2,7 @@
 
 ## [Visit Website Here..](https://healthcare-erp.dreel.co/)
 
-![Preview](Preview.mp4)
+![Preview](Preview.png)
 
 Welcome to the **Healthcare ERP Software**, an integrated solution designed to streamline operations and enhance the efficiency of healthcare institutions. This software caters to various account types and provides comprehensive management of outpatient (OPD) and inpatient (IPD) registrations, updates, and deletions, along with robust stats and attendance management.
 
